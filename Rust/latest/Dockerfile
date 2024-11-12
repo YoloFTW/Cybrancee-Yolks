@@ -1,4 +1,4 @@
-FROM        --platform=$TARGETOS/$TARGETARCH rust:slim
+FROM        --platform=$TARGETOS/$TARGETARCH rust:latest
 
 LABEL       author="Ethan Coward" maintainer="support@cybrancee.com"
 
