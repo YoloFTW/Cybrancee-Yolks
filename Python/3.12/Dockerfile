@@ -3,7 +3,7 @@ FROM        --platform=$TARGETOS/$TARGETARCH python:3.12-slim-bookworm
 LABEL       author="Michael Parker" maintainer="support@cybrancee.com"
 
 RUN         apt-get update \
-            && apt -y install git gcc g++ ca-certificates dnsutils curl iproute2 ffmpeg procps tini \
+            && apt -y install git gcc g++ ca-certificates dnsutils curl iproute2 ffmpeg procps tini libmariadb3 libmariadb-dev\
             && useradd -m -d /home/container container
 
 RUN python -m pip install --upgrade pip
