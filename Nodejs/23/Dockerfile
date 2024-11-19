@@ -1,4 +1,4 @@
-FROM        --platform=$TARGETOS/$TARGETARCH node:22-bullseye-slim
+FROM        --platform=$TARGETOS/$TARGETARCH node:23-bookworm-slim
 
 ARG CHROME_VERSION="130.0.6723.116"
 
@@ -16,7 +16,7 @@ RUN         npm config set registry http://registry.npmjs.org/ --global
 
 RUN         npm cache clear --force
 
-RUN         npm install npm@10.x.x typescript ts-node @types/node --force --verbose --location=global
+RUN         npm install npm@latest typescript ts-node @types/node --force --verbose --location=global
 
 # install pnpm
 RUN         npm install -g corepack
@@ -35,5 +35,6 @@ STOPSIGNAL SIGINT
 
 COPY        --chown=container:container ./../entrypoint.sh /entrypoint.sh
 RUN         chmod +x /entrypoint.sh
+
 ENTRYPOINT    ["/usr/bin/tini", "-g", "--"]
 CMD         ["/entrypoint.sh"]
