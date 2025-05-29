@@ -1,0 +1,41 @@
+name: Find All Folders
+
+on:
+  workflow_dispatch
+
+jobs:
+
+  prepare_matrix:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      folders: ${{ steps.get_folders.outputs.folder_names_json }}
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get folder names and format as JSON array
+        id: get_folders
+        run: |
+          FOLDER_NAMES_JSON=$(find my_parent_folder -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0 -I {} basename "{}" | jq -R -s -c 'split("\n")[:-1]')
+
+          echo "Found folders (JSON): $FOLDER_NAMES_JSON"
+
+          echo "folder_names_json=$FOLDER_NAMES_JSON" >> "$GITHUB_OUTPUT"
+
+
+  process_folders:
+    needs: prepare_matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: ${{ fromJson(needs.prepare_matrix.outputs.folders) }}
+        
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Process individual folder
+        run: |
+          echo "Currently processing folder: ${{ matrix.folder }}"
