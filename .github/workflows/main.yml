@@ -18,7 +18,7 @@ jobs:
       - name: Get folder names and format as JSON array
         id: get_folders
         run: |
-          FOLDER_NAMES_JSON=$(find my_parent_folder -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0 -I {} basename "{}" | jq -R -s -c 'split("\n")[:-1]')
+          FOLDER_NAMES_JSON=$(Python -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0 -I {} basename "{}" | jq -R -s -c 'split("\n")[:-1]')
 
           echo "Found folders (JSON): $FOLDER_NAMES_JSON"
 
